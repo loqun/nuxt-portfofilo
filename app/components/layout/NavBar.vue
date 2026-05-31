@@ -1,15 +1,8 @@
 <template>
   <header class="nav">
-    <div class="top-row">
-      <NuxtLink to="/" class="logo">{{ name }}</NuxtLink>
-      <button class="toggle" @click="toggle" :title="`Switch to ${mode === 'dev' ? 'photography' : 'developer'} mode`">
-        <span class="toggle-track">
-          <span class="toggle-dot" :class="mode"></span>
-        </span>
-        <span class="toggle-label">{{ mode === 'dev' ? 'Dev' : 'Photo' }}</span>
-      </button>
-    </div>
-    <nav class="nav-links" aria-label="Primary">
+    <NuxtLink to="/" class="logo">{{ name }}</NuxtLink>
+    <div class="right">
+      <nav aria-label="Primary">
         <template v-if="mode === 'dev'">
           <NuxtLink to="/home">Home</NuxtLink>
           <NuxtLink to="/projects">Projects</NuxtLink>
@@ -27,7 +20,14 @@
           <NuxtLink to="/convo">Convo</NuxtLink>
           <NuxtLink to="/sports">Sports</NuxtLink>
         </template>
-    </nav>
+      </nav>
+      <button class="toggle" @click="toggle" :title="`Switch to ${mode === 'dev' ? 'photography' : 'developer'} mode`">
+        <span class="toggle-track">
+          <span class="toggle-dot" :class="mode"></span>
+        </span>
+        <span class="toggle-label">{{ mode === 'dev' ? 'Dev' : 'Photo' }}</span>
+      </button>
+    </div>
   </header>
 </template>
 
@@ -45,28 +45,25 @@ const { mode, toggle } = useMode()
 
 <style scoped>
 .nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem 2rem 0.75rem;
-  transition: background 0.3s, border-color 0.3s;
-  background: color-mix(in srgb, var(--bg) 94%, transparent);
-  backdrop-filter: blur(10px);
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+  padding: 1.5rem 2rem;
+  transition: background 0.3s;
+  background: var(--bg);
 }
 
-.top-row {
+.right {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .logo {
   font-family: 'Sora', sans-serif;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 700;
   text-decoration: none;
   color: var(--heading);
@@ -74,39 +71,22 @@ const { mode, toggle } = useMode()
   min-width: 0;
 }
 
-.nav-links {
+nav {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.85rem;
-  padding-bottom: 0.25rem;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  gap: 1.5rem;
 }
 
-.nav-links::-webkit-scrollbar {
-  display: none;
-}
-
-.nav-links a {
-  flex: 0 0 auto;
+nav a {
   font-size: 0.8125rem;
   color: var(--accent-light);
   text-decoration: none;
   transition: color 0.2s;
-  padding: 0.4rem 0.75rem;
-  border-radius: 999px;
-  white-space: nowrap;
-  background: transparent;
 }
 
-.nav-links a:hover,
-.nav-links a.router-link-active,
-.nav-links a.active {
+nav a:hover,
+nav a.router-link-active {
   color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .photo-link {
@@ -163,28 +143,46 @@ const { mode, toggle } = useMode()
 
 @media (max-width: 768px) {
   .nav {
-    padding: 0.85rem 1rem 0.6rem;
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
-  .top-row {
-    gap: 0.75rem;
+  .right {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
   }
 
   .logo {
     font-size: 0.9rem;
+    align-self: flex-start;
   }
 
-  .nav-links {
-    gap: 0.35rem;
-    margin-top: 0.7rem;
-    padding-bottom: 0.15rem;
-    margin-left: -0.15rem;
-    margin-right: -0.15rem;
+  nav {
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0.4rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.1rem;
   }
 
-  .nav-links a {
+  nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  nav a {
+    flex: 0 0 auto;
     font-size: 0.75rem;
     padding: 0.38rem 0.62rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
   }
 
   .toggle-label {
