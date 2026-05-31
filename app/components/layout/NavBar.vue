@@ -1,8 +1,15 @@
 <template>
   <header class="nav">
-    <NuxtLink to="/" class="logo">{{ name }}</NuxtLink>
-    <div class="right">
-      <nav>
+    <div class="top-row">
+      <NuxtLink to="/" class="logo">{{ name }}</NuxtLink>
+      <button class="toggle" @click="toggle" :title="`Switch to ${mode === 'dev' ? 'photography' : 'developer'} mode`">
+        <span class="toggle-track">
+          <span class="toggle-dot" :class="mode"></span>
+        </span>
+        <span class="toggle-label">{{ mode === 'dev' ? 'Dev' : 'Photo' }}</span>
+      </button>
+    </div>
+    <nav class="nav-links" aria-label="Primary">
         <template v-if="mode === 'dev'">
           <NuxtLink to="/home">Home</NuxtLink>
           <NuxtLink to="/projects">Projects</NuxtLink>
@@ -20,14 +27,7 @@
           <NuxtLink to="/convo">Convo</NuxtLink>
           <NuxtLink to="/sports">Sports</NuxtLink>
         </template>
-      </nav>
-      <button class="toggle" @click="toggle" :title="`Switch to ${mode === 'dev' ? 'photography' : 'developer'} mode`">
-        <span class="toggle-track">
-          <span class="toggle-dot" :class="mode"></span>
-        </span>
-        <span class="toggle-label">{{ mode === 'dev' ? 'Dev' : 'Photo' }}</span>
-      </button>
-    </div>
+    </nav>
   </header>
 </template>
 
@@ -45,46 +45,68 @@ const { mode, toggle } = useMode()
 
 <style scoped>
 .nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  transition: background 0.3s;
-  background: var(--bg);
+  padding: 1rem 2rem 0.75rem;
+  transition: background 0.3s, border-color 0.3s;
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+}
+
+.top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .logo {
   font-family: 'Sora', sans-serif;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   text-decoration: none;
   color: var(--heading);
   transition: color 0.3s;
+  min-width: 0;
 }
 
-.right {
+.nav-links {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  padding-bottom: 0.25rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
-nav {
-  display: flex;
-  gap: 1.5rem;
+.nav-links::-webkit-scrollbar {
+  display: none;
 }
 
-nav a {
+.nav-links a {
+  flex: 0 0 auto;
   font-size: 0.8125rem;
   color: var(--accent-light);
   text-decoration: none;
   transition: color 0.2s;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: transparent;
 }
 
-nav a:hover,
-nav a.router-link-active {
+.nav-links a:hover,
+.nav-links a.router-link-active,
+.nav-links a.active {
   color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .photo-link {
@@ -104,6 +126,7 @@ nav a.router-link-active {
   border: none;
   cursor: pointer;
   padding: 0;
+  flex-shrink: 0;
 }
 
 .toggle-track {
@@ -140,21 +163,32 @@ nav a.router-link-active {
 
 @media (max-width: 768px) {
   .nav {
-    padding: 1rem;
-    flex-direction: column;
+    padding: 0.85rem 1rem 0.6rem;
+  }
+
+  .top-row {
     gap: 0.75rem;
   }
 
-  .right {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
+  .logo {
+    font-size: 0.9rem;
   }
 
-  nav {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
+  .nav-links {
+    gap: 0.35rem;
+    margin-top: 0.7rem;
+    padding-bottom: 0.15rem;
+    margin-left: -0.15rem;
+    margin-right: -0.15rem;
+  }
+
+  .nav-links a {
+    font-size: 0.75rem;
+    padding: 0.38rem 0.62rem;
+  }
+
+  .toggle-label {
+    display: none;
   }
 }
 </style>
