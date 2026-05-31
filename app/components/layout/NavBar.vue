@@ -21,11 +21,35 @@
           <NuxtLink to="/sports">Sports</NuxtLink>
         </template>
       </nav>
-      <button class="toggle" @click="toggle" :title="`Switch to ${mode === 'dev' ? 'photography' : 'developer'} mode`">
+      <button
+        class="toggle"
+        @click="toggle"
+        :title="`Switch to ${mode === 'dev' ? 'photography' : 'developer'} mode`"
+        :aria-label="`Switch to ${mode === 'dev' ? 'photography' : 'developer'} mode`"
+      >
         <span class="toggle-track">
-          <span class="toggle-dot" :class="mode"></span>
+          <svg v-if="mode === 'dev'" class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4.5 7.5h15v9h-15z" />
+            <path d="M9 18h6" />
+          </svg>
+          <svg v-else class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4.5 8.5h15v8h-15z" />
+            <path d="M8 8.5l1.5-2h5L16 8.5" />
+            <circle cx="12" cy="12.5" r="2.5" />
+          </svg>
         </span>
         <span class="toggle-label">{{ mode === 'dev' ? 'Dev' : 'Photo' }}</span>
+        <span class="toggle-mobile-icon" aria-hidden="true">
+          <svg v-if="mode === 'dev'" class="toggle-icon" viewBox="0 0 24 24">
+            <path d="M4.5 7.5h15v9h-15z" />
+            <path d="M9 18h6" />
+          </svg>
+          <svg v-else class="toggle-icon" viewBox="0 0 24 24">
+            <path d="M4.5 8.5h15v8h-15z" />
+            <path d="M8 8.5l1.5-2h5L16 8.5" />
+            <circle cx="12" cy="12.5" r="2.5" />
+          </svg>
+        </span>
       </button>
     </div>
   </header>
@@ -110,27 +134,26 @@ nav a.router-link-active {
 }
 
 .toggle-track {
-  width: 36px;
-  height: 20px;
+  width: 44px;
+  height: 24px;
   background: var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   position: relative;
   transition: background 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.toggle-dot {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--accent);
-  transition: all 0.3s;
-}
-
-.toggle-dot.photo {
-  left: 18px;
+.toggle-icon {
+  width: 15px;
+  height: 15px;
+  color: var(--accent);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .toggle-label {
@@ -141,23 +164,27 @@ nav a.router-link-active {
   letter-spacing: 0.05em;
 }
 
+.toggle-mobile-icon {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .nav {
-    padding: 1rem;
+    position: relative;
+    padding: 1rem 1rem 0.85rem;
     flex-direction: column;
-    gap: 0.75rem;
+    align-items: flex-start;
+    gap: 0;
   }
 
   .right {
     width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
+    display: block;
+    padding-top: 2.15rem;
   }
 
   .logo {
     font-size: 0.9rem;
-    align-self: flex-start;
   }
 
   nav {
@@ -169,7 +196,7 @@ nav a.router-link-active {
     overscroll-behavior-x: contain;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding-bottom: 0.1rem;
+    padding-bottom: 0;
   }
 
   nav::-webkit-scrollbar {
@@ -185,8 +212,30 @@ nav a.router-link-active {
     background: color-mix(in srgb, var(--accent) 8%, transparent);
   }
 
+  .toggle {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    justify-content: center;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    color: var(--text-muted);
+  }
+
+  .toggle-track {
+    display: none;
+  }
+
   .toggle-label {
     display: none;
+  }
+
+  .toggle-mobile-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>
