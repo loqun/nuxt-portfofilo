@@ -1,6 +1,12 @@
 <template>
-  <div class="projects-page">
+  <div class="projects-page" :aria-busy="!loaded">
     <h1>Projects</h1>
+    <div v-if="!loaded" class="list">
+      <div v-for="n in 4" :key="`project-skeleton-${n}`" class="item skeleton-item">
+        <SkeletonBlock width="52%" height="1.15rem" radius="999px" />
+        <SkeletonBlock width="84%" height="0.9rem" radius="999px" class="desc-skeleton" />
+      </div>
+    </div>
     <div v-if="projects.length" class="list">
       <NuxtLink
         v-for="project in projects"
@@ -18,10 +24,12 @@
 <script setup lang="ts">
 const api = useApi()
 const projects = ref<Awaited<ReturnType<typeof api.getProjects>>>([])
+const loaded = ref(false)
 
 onMounted(async () => {
   const data = await api.getProjects()
   if (data) projects.value = data
+  loaded.value = true
 })
 useHead({ title: 'Projects' })
 </script>
@@ -57,6 +65,14 @@ h1 {
 
 .item:hover {
   opacity: 0.6;
+}
+
+.skeleton-item {
+  display: block;
+}
+
+.desc-skeleton {
+  margin-top: 0.55rem;
 }
 
 .title {

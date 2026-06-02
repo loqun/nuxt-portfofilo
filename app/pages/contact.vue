@@ -1,9 +1,14 @@
 <template>
-  <div class="contact">
+  <div class="contact" :aria-busy="!loaded">
     <h1>Contact</h1>
     <p class="intro">Get in touch — I'd love to hear from you.</p>
-    <a :href="`mailto:${email}`" class="email">{{ email }}</a>
-    <div class="links">
+    <SkeletonBlock v-if="!loaded" width="14rem" height="1.2rem" radius="999px" class="email-skeleton" />
+    <a v-else :href="`mailto:${email}`" class="email">{{ email }}</a>
+    <div v-if="!loaded" class="links">
+      <SkeletonBlock width="4.5rem" height="0.8rem" radius="999px" />
+      <SkeletonBlock width="4.8rem" height="0.8rem" radius="999px" />
+    </div>
+    <div v-else class="links">
       <a :href="social.github" target="_blank" rel="noopener">GitHub</a>
       <a :href="social.linkedin" target="_blank" rel="noopener">LinkedIn</a>
     </div>
@@ -13,9 +18,11 @@
 <script setup lang="ts">
 const api = useApi()
 const about = ref<Awaited<ReturnType<typeof api.getAbout>>>(null)
+const loaded = ref(false)
 
 onMounted(async () => {
   about.value = await api.getAbout()
+  loaded.value = true
 })
 
 const email = computed(() => about.value?.email ?? '')
@@ -46,6 +53,10 @@ h1 {
   transition: color 0.3s;
 }
 
+.email-skeleton {
+  margin-bottom: 2rem;
+}
+
 .email {
   display: inline-block;
   font-family: 'Sora', sans-serif;
@@ -65,6 +76,8 @@ h1 {
 .links {
   display: flex;
   gap: 1.5rem;
+  align-items: center;
+  min-height: 1rem;
 }
 
 .links a {

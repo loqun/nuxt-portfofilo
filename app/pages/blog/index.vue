@@ -1,6 +1,14 @@
 <template>
-  <div class="blog-page">
+  <div class="blog-page" :aria-busy="!loaded">
     <h1>Blog</h1>
+    <div v-if="!loaded" class="list">
+      <div v-for="n in 3" :key="`post-skeleton-${n}`" class="item skeleton-item">
+        <SkeletonBlock width="68%" height="1.15rem" radius="999px" />
+        <SkeletonBlock width="44%" height="0.8rem" radius="999px" class="meta-skeleton" />
+        <SkeletonBlock width="100%" height="0.9rem" radius="999px" class="excerpt-skeleton" />
+        <SkeletonBlock width="88%" height="0.9rem" radius="999px" class="excerpt-skeleton" />
+      </div>
+    </div>
     <div v-if="posts.length" class="list">
       <NuxtLink
         v-for="post in posts"
@@ -65,6 +73,15 @@ h1 {
 
 .item:hover {
   opacity: 0.6;
+}
+
+.skeleton-item {
+  display: block;
+}
+
+.meta-skeleton,
+.excerpt-skeleton {
+  margin-top: 0.55rem;
 }
 
 .title {

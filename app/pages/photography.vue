@@ -1,5 +1,33 @@
 <template>
-  <div v-if="about" class="profile-page">
+  <div v-if="!loaded" class="profile-page" :aria-busy="true">
+    <header class="profile-header">
+      <SkeletonBlock width="6rem" height="0.8rem" radius="999px" class="heading-skeleton" />
+      <SkeletonBlock width="46%" height="3rem" radius="1rem" class="title-skeleton" />
+      <SkeletonBlock width="72%" height="1rem" radius="999px" class="subtitle-skeleton" />
+    </header>
+
+    <section class="bio-section">
+      <SkeletonBlock width="100%" height="0.95rem" radius="999px" class="para-skeleton" />
+      <SkeletonBlock width="96%" height="0.95rem" radius="999px" class="para-skeleton" />
+      <SkeletonBlock width="88%" height="0.95rem" radius="999px" class="para-skeleton" />
+    </section>
+
+    <section class="gear-section">
+      <SkeletonBlock width="4rem" height="0.8rem" radius="999px" class="heading-skeleton" />
+      <div class="gear-list">
+        <div v-for="n in 3" :key="`gear-skeleton-${n}`" class="gear-item skeleton-item">
+          <SkeletonBlock width="34%" height="0.9rem" radius="999px" />
+          <SkeletonBlock width="58%" height="0.8rem" radius="999px" />
+        </div>
+      </div>
+    </section>
+
+    <section class="social-section">
+      <SkeletonBlock width="4rem" height="0.8rem" radius="999px" class="heading-skeleton" />
+      <SkeletonBlock width="9rem" height="1rem" radius="999px" />
+    </section>
+  </div>
+  <div v-else-if="about" class="profile-page">
     <header class="profile-header">
       <h1>{{ name }}</h1>
       <p class="subtitle">I shoot with film — Canon F-1, MinoltaCord, and Olympus Pen half-frame. Every frame feels intentional when you can't chimp.</p>
@@ -66,6 +94,17 @@ useHead({ title: 'Photography' })
 
 .profile-header {
   margin-bottom: 3rem;
+}
+
+.heading-skeleton,
+.title-skeleton,
+.subtitle-skeleton,
+.para-skeleton {
+  margin-bottom: 0.9rem;
+}
+
+.skeleton-item {
+  align-items: center;
 }
 
 h1 {

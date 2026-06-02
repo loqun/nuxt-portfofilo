@@ -1,5 +1,18 @@
 <template>
-  <div class="post-page" v-if="post">
+  <div class="post-page" v-if="!loaded" :aria-busy="true">
+    <NuxtLink to="/blog" class="back">&larr; Back</NuxtLink>
+    <SkeletonBlock width="70%" height="3rem" radius="1rem" class="title-skeleton" />
+    <div class="meta">
+      <SkeletonBlock width="5rem" height="0.75rem" radius="999px" />
+      <SkeletonBlock width="4rem" height="0.75rem" radius="999px" />
+      <SkeletonBlock width="4.5rem" height="0.75rem" radius="999px" />
+    </div>
+    <SkeletonBlock width="100%" height="0.95rem" radius="999px" class="para-skeleton" />
+    <SkeletonBlock width="96%" height="0.95rem" radius="999px" class="para-skeleton" />
+    <SkeletonBlock width="88%" height="0.95rem" radius="999px" class="para-skeleton" />
+    <SkeletonBlock width="92%" height="0.95rem" radius="999px" class="para-skeleton" />
+  </div>
+  <div class="post-page" v-else-if="post">
     <NuxtLink to="/blog" class="back">&larr; Back</NuxtLink>
     <h1>{{ post.title }}</h1>
     <div class="meta">
@@ -55,6 +68,11 @@ useHead({ title: computed(() => post.value ? post.value.title : 'Not Found') })
 
 .back:hover {
   color: var(--accent);
+}
+
+.title-skeleton,
+.para-skeleton {
+  margin-bottom: 1rem;
 }
 
 h1 {

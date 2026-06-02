@@ -1,5 +1,20 @@
 <template>
-  <div class="project-page" v-if="project">
+  <div class="project-page" v-if="!loaded" :aria-busy="true">
+    <NuxtLink to="/projects" class="back">&larr; Back</NuxtLink>
+    <SkeletonBlock width="58%" height="3rem" radius="1rem" class="title-skeleton" />
+    <SkeletonBlock width="84%" height="1.2rem" radius="999px" class="desc-skeleton" />
+    <SkeletonBlock width="100%" height="0.95rem" radius="999px" class="para-skeleton" />
+    <SkeletonBlock width="96%" height="0.95rem" radius="999px" class="para-skeleton" />
+    <SkeletonBlock width="88%" height="0.95rem" radius="999px" class="para-skeleton" />
+    <div class="tags">
+      <SkeletonBlock v-for="n in 3" :key="`tag-skeleton-${n}`" width="5rem" height="1.2rem" radius="999px" />
+    </div>
+    <div class="links">
+      <SkeletonBlock width="5.5rem" height="0.9rem" radius="999px" />
+      <SkeletonBlock width="4.5rem" height="0.9rem" radius="999px" />
+    </div>
+  </div>
+  <div class="project-page" v-else-if="project">
     <NuxtLink to="/projects" class="back">&larr; Back</NuxtLink>
     <h1>{{ project.title }}</h1>
     <p class="desc">{{ project.description }}</p>
@@ -50,6 +65,12 @@ useHead({ title: computed(() => project.value ? project.value.title : 'Not Found
 
 .back:hover {
   color: var(--accent);
+}
+
+.title-skeleton,
+.desc-skeleton,
+.para-skeleton {
+  margin-bottom: 1rem;
 }
 
 h1 {

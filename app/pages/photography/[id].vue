@@ -1,5 +1,14 @@
 <template>
-  <div class="photo-detail" v-if="photo">
+  <div class="photo-detail" v-if="!loaded" :aria-busy="true">
+    <NuxtLink to="/photography" class="back">&larr; Gallery</NuxtLink>
+    <SkeletonBlock height="62vh" radius="1rem" class="image-skeleton" />
+    <div class="info">
+      <SkeletonBlock width="48%" height="1.8rem" radius="1rem" class="title-skeleton" />
+      <SkeletonBlock width="18%" height="0.9rem" radius="999px" class="meta-skeleton" />
+      <SkeletonBlock width="22%" height="0.75rem" radius="999px" />
+    </div>
+  </div>
+  <div class="photo-detail" v-else-if="photo">
     <NuxtLink to="/photography" class="back">&larr; Gallery</NuxtLink>
     <div class="image-wrapper">
       <img :src="photo.src" :alt="photo.title" />
@@ -53,6 +62,16 @@ useHead({ title: computed(() => photo.value ? photo.value.title : 'Not Found') }
 
 .back:hover {
   color: #2563eb;
+}
+
+.image-skeleton {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.title-skeleton,
+.meta-skeleton {
+  margin-bottom: 0.5rem;
 }
 
 .image-wrapper {

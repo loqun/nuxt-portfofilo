@@ -1,5 +1,19 @@
 <template>
-  <div class="album-page" v-if="album">
+  <div class="album-page" v-if="!loaded" :aria-busy="true">
+    <NuxtLink to="/photography" class="back">&larr; Profile</NuxtLink>
+    <SkeletonBlock height="400px" radius="4px" class="album-hero-skeleton" />
+    <div class="album-info">
+      <SkeletonBlock width="42%" height="2.2rem" radius="1rem" class="title-skeleton" />
+      <SkeletonBlock width="68%" height="0.95rem" radius="999px" class="desc-skeleton" />
+      <SkeletonBlock width="58%" height="0.95rem" radius="999px" class="desc-skeleton" />
+    </div>
+    <div class="album-grid">
+      <div v-for="n in 6" :key="`photo-skeleton-${n}`" class="photo-card skeleton-card" :class="n % 3 === 0 ? 'portrait' : 'square'">
+        <SkeletonBlock height="220px" radius="4px" class="photo-skeleton" />
+      </div>
+    </div>
+  </div>
+  <div class="album-page" v-else-if="album">
     <NuxtLink to="/photography" class="back">&larr; Profile</NuxtLink>
     <div class="album-hero">
       <img :src="album.cover" :alt="album.title" />
@@ -67,6 +81,21 @@ useHead({ title: 'Sports' })
 }
 
 .back:hover { color: #2563eb; }
+
+.album-hero-skeleton,
+.title-skeleton,
+.desc-skeleton {
+  margin-bottom: 1rem;
+}
+
+.skeleton-card {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.photo-skeleton {
+  min-height: 220px;
+}
 
 .album-hero {
   max-width: 1200px;

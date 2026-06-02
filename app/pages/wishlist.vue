@@ -1,6 +1,17 @@
 <template>
-  <div class="wishlist-page">
+  <div class="wishlist-page" :aria-busy="!loaded">
     <h1>Wishlist</h1>
+    <div v-if="!loaded">
+      <div v-for="group in 2" :key="`wishlist-group-skeleton-${group}`" class="group">
+        <SkeletonBlock width="5rem" height="0.75rem" radius="999px" class="group-skeleton" />
+        <div class="list">
+          <div v-for="item in 3" :key="`wishlist-item-skeleton-${group}-${item}`" class="item skeleton-item">
+            <SkeletonBlock width="48%" height="0.95rem" radius="999px" />
+            <SkeletonBlock width="34%" height="0.8rem" radius="999px" />
+          </div>
+        </div>
+      </div>
+    </div>
     <template v-if="wishlist.length">
       <div v-for="group in wishlist" :key="group.category" class="group">
         <h2>{{ group.category }}</h2>
@@ -53,6 +64,10 @@ h1 {
   margin-bottom: 3rem;
 }
 
+.group-skeleton {
+  margin-bottom: 1rem;
+}
+
 h2 {
   font-family: 'Sora', sans-serif;
   font-size: 0.75rem;
@@ -76,6 +91,10 @@ h2 {
   padding: 1rem 0;
   border-bottom: 1px solid var(--border);
   transition: border-color 0.3s;
+}
+
+.skeleton-item {
+  align-items: center;
 }
 
 .name {

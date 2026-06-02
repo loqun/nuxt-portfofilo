@@ -1,6 +1,7 @@
 <template>
   <footer class="footer">
-    <span>&copy; {{ year }} {{ name }}</span>
+    <span v-if="name">&copy; {{ year }} {{ name }}</span>
+    <SkeletonBlock v-else width="12rem" height="0.75rem" radius="999px" class="footer-skeleton" />
   </footer>
 </template>
 
@@ -25,5 +26,9 @@ const year = new Date().getFullYear()
   font-size: 0.75rem;
   color: var(--text-muted);
   transition: color 0.3s;
+}
+
+.footer-skeleton {
+  margin: 0 auto;
 }
 </style>

@@ -1,6 +1,12 @@
 <template>
-  <div class="skills-page">
+  <div class="skills-page" :aria-busy="!loaded">
     <h1>Skills</h1>
+    <div v-if="!loaded" class="list">
+      <div v-for="n in 6" :key="`skill-skeleton-${n}`" class="item skeleton-item">
+        <SkeletonBlock width="42%" height="0.95rem" radius="999px" />
+        <SkeletonBlock width="18%" height="0.75rem" radius="999px" />
+      </div>
+    </div>
     <div v-if="skills.length" class="list">
       <div v-for="skill in skills" :key="skill.name" class="item">
         <span class="name">{{ skill.name }}</span>
@@ -13,10 +19,12 @@
 <script setup lang="ts">
 const api = useApi()
 const skills = ref<Awaited<ReturnType<typeof api.getSkills>>>([])
+const loaded = ref(false)
 
 onMounted(async () => {
   const data = await api.getSkills()
   if (data) skills.value = data
+  loaded.value = true
 })
 useHead({ title: 'Skills' })
 </script>
@@ -48,6 +56,10 @@ h1 {
   padding: 1rem 0;
   border-bottom: 1px solid var(--border);
   transition: border-color 0.3s;
+}
+
+.skeleton-item {
+  align-items: center;
 }
 
 .name {

@@ -1,6 +1,9 @@
 <template>
   <header class="nav">
-    <NuxtLink to="/" class="logo">{{ name }}</NuxtLink>
+    <NuxtLink to="/" class="logo">
+      <SkeletonBlock v-if="!name" width="5rem" height="1rem" radius="999px" />
+      <span v-else>{{ name }}</span>
+    </NuxtLink>
     <div class="right">
       <nav aria-label="Primary">
         <template v-if="mode === 'dev'">
@@ -93,6 +96,10 @@ const { mode, toggle } = useMode()
   color: var(--heading);
   transition: color 0.3s;
   min-width: 0;
+}
+
+.logo :deep(.skeleton-block) {
+  display: block;
 }
 
 nav {

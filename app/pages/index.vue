@@ -1,6 +1,41 @@
 <template>
-  <div>
-    <div v-if="mode === 'dev' && about" class="home">
+  <div :aria-busy="!loaded">
+    <div v-if="mode === 'dev' && !loaded" class="home">
+      <section class="hero">
+        <SkeletonBlock width="7rem" height="0.8rem" radius="999px" class="greeting-skeleton" />
+        <SkeletonBlock width="55%" height="3.5rem" radius="1rem" class="title-skeleton" />
+        <SkeletonBlock width="42%" height="1.4rem" radius="999px" class="tagline-skeleton" />
+        <SkeletonBlock width="100%" height="0.95rem" radius="999px" class="bio-skeleton" />
+        <SkeletonBlock width="92%" height="0.95rem" radius="999px" class="bio-skeleton" />
+        <SkeletonBlock width="78%" height="0.95rem" radius="999px" class="bio-skeleton" />
+      </section>
+
+      <section class="section">
+        <SkeletonBlock width="6rem" height="0.8rem" radius="999px" class="section-title-skeleton" />
+        <div class="list">
+          <div v-for="n in 3" :key="`project-skeleton-${n}`" class="item skeleton-item">
+            <div class="item-text">
+              <SkeletonBlock width="65%" height="1.05rem" radius="999px" />
+              <SkeletonBlock width="38%" height="0.8rem" radius="999px" class="meta-skeleton" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <SkeletonBlock width="4.5rem" height="0.8rem" radius="999px" class="section-title-skeleton" />
+        <div class="list">
+          <div v-for="n in 3" :key="`post-skeleton-${n}`" class="item skeleton-item">
+            <div class="item-text">
+              <SkeletonBlock width="72%" height="1.05rem" radius="999px" />
+              <SkeletonBlock width="28%" height="0.8rem" radius="999px" class="meta-skeleton" />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div v-else-if="mode === 'dev' && about" class="home">
       <section class="hero">
         <p class="greeting">Hello, I'm</p>
         <h1>{{ name }}</h1>
@@ -35,6 +70,29 @@
             <span class="title">{{ post.title }}</span>
             <span class="meta">{{ post.date }}</span>
           </NuxtLink>
+        </div>
+      </section>
+    </div>
+
+    <div v-else-if="mode === 'photo' && !loaded" class="photo-page">
+      <header class="photo-header">
+        <SkeletonBlock width="6rem" height="0.8rem" radius="999px" class="heading-skeleton" />
+        <SkeletonBlock width="48%" height="3.5rem" radius="1rem" class="title-skeleton" />
+        <SkeletonBlock width="68%" height="1rem" radius="999px" class="subtitle-skeleton" />
+        <SkeletonBlock width="10rem" height="0.95rem" radius="999px" class="link-skeleton" />
+      </header>
+
+      <section class="albums-section">
+        <SkeletonBlock width="5rem" height="0.8rem" radius="999px" class="heading-skeleton" />
+        <div class="album-grid skeleton-album-grid">
+          <div v-for="n in 4" :key="`album-skeleton-${n}`" class="album-card skeleton-album-card">
+            <SkeletonBlock height="180px" radius="14px" class="album-cover-skeleton" />
+            <div class="album-info">
+              <SkeletonBlock width="62%" height="1.15rem" radius="999px" />
+              <SkeletonBlock width="88%" height="0.9rem" radius="999px" class="meta-skeleton" />
+              <SkeletonBlock width="74%" height="0.9rem" radius="999px" class="meta-skeleton" />
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -151,6 +209,39 @@ useHead({ title: 'Portfolio' })
   color: var(--accent-light);
   margin-bottom: 0.5rem;
   transition: color 0.3s;
+}
+
+.greeting-skeleton,
+.title-skeleton,
+.tagline-skeleton,
+.bio-skeleton,
+.section-title-skeleton,
+.meta-skeleton,
+.heading-skeleton,
+.subtitle-skeleton,
+.link-skeleton {
+  margin-bottom: 0.75rem;
+}
+
+.item-text {
+  width: 100%;
+}
+
+.skeleton-item {
+  padding: 1.25rem 0;
+}
+
+.skeleton-album-grid {
+  border-top: 0;
+}
+
+.skeleton-album-card {
+  display: block;
+}
+
+.album-cover-skeleton {
+  width: 100%;
+  margin-bottom: 0.9rem;
 }
 
 h1 {
